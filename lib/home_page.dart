@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:math_expressions/math_expressions.dart';
 
 import 'helper_ui.dart';
 
@@ -27,7 +28,7 @@ class _HomePageState extends State<HomePage> {
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.symmetric(vertical: 40.0),
+              padding: const EdgeInsets.symmetric(vertical: 55.0),
               child: Column(
                 children: [
                   Text(
@@ -36,7 +37,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                   Text(
                     answer.toString(),
-                    style: TextStyle(fontSize: 30, color: Colors.white),
+                    style: TextStyle(fontSize: 25, color: Colors.white),
                   )
                 ],
               ),
@@ -209,7 +210,8 @@ class _HomePageState extends State<HomePage> {
                         tittle: "Del",
                         colorCircle: Colors.grey,
                         onPress: () {
-                          userInput = "";
+                          userInput =
+                              userInput.substring(0, userInput.length - 1);
 
                           setState(() {});
                         },
@@ -218,7 +220,7 @@ class _HomePageState extends State<HomePage> {
                         tittle: "=",
                         colorCircle: Colors.orange,
                         onPress: () {
-                          userInput += "=";
+                          equalPress();
                           setState(() {});
                         },
                       ),
@@ -232,4 +234,13 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
+}
+
+void equalPress() {
+  Parser p = Parser();
+  Expression expression = p.parse(userInput);
+  ContextModel contextModel = ContextModel();
+
+  double eval = expression.evaluate(EvaluationType.REAL, contextModel);
+  answer = eval.toString();
 }
